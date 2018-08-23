@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -10,19 +11,31 @@ namespace ChessDisplay
     /// </summary>
     public partial class ChessSquare : UserControl
     {
+        public readonly SolidColorBrush DefaultBackground;
+
         public ChessSquare(bool grey)
         {
             InitializeComponent();
+            DefaultBackground = new SolidColorBrush(grey ? Colors.Gray : Colors.White);
+            Square.Background = DefaultBackground;
+            this.MouseEnter += Square_Enter;
+            this.MouseLeave += Square_Leave;
 
-            if (grey)
-                Square.Background = new SolidColorBrush(Colors.Gray);
-            else
-                Square.Background = new SolidColorBrush(Colors.White);
         }
 
         public void SetPicture(BitmapImage image)
         {
             ChessPieceImage.Source = image;
         }
+
+        private void Square_Enter(object sender, MouseEventArgs e) {
+            Square.Background = new SolidColorBrush(Colors.Blue);
+        }
+
+        private void Square_Leave(object sender, MouseEventArgs e) {
+            //return to default value
+            Square.Background = DefaultBackground;
+        }
+
     }
 }
