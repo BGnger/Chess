@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -180,41 +181,42 @@ namespace File_IO.Models {
 
         public bool Move(int locationX, int locationY, int toX, int toY) {
             ChessPiece movingPiece = this[locationX, locationY];
-            if (movingPiece != null) {
-                if (this.CheckMove(locationX, locationY, toX, toY) && movingPiece.Color != lastColor) {
-                    Board boardClone = this.Clone();
-                    boardClone[locationX, locationY] = null;
-                    boardClone[toX, toY] = movingPiece;
-                    if (!boardClone.Check(movingPiece.Color)) {
-                        this.Copy(boardClone);
-                        lastColor = movingPiece.Color;
-                        return true;
-                    }
+            if (this.CheckMove(locationX, locationY, toX, toY) && movingPiece.Color != lastColor) {
+                Board boardClone = this.Clone();
+                boardClone[locationX, locationY] = null;
+                boardClone[toX, toY] = movingPiece;
+                if (!boardClone.Check(movingPiece.Color)) {
+                    this.Copy(boardClone);
+                    lastColor = movingPiece.Color;
+                    return true;
                 }
             }
             return false;
         }
         private bool CheckMove(int locationX, int locationY, int toX, int toY) {
+            ChessPiece movingPiece = this[locationX, locationY];
             bool result = false;
-            switch (this[locationX, locationY].Piece) {
-                case Pieces.K:
-                    result = MoveKing(locationX, locationY, toX, toY);
-                    break;
-                case Pieces.Q:
-                    result = MoveQueen(locationX, locationY, toX, toY);
-                    break;
-                case Pieces.B:
-                    result = MoveBishop(locationX, locationY, toX, toY);
-                    break;
-                case Pieces.N:
-                    result = MoveKnight(locationX, locationY, toX, toY);
-                    break;
-                case Pieces.R:
-                    result = MoveRook(locationX, locationY, toX, toY);
-                    break;
-                case Pieces.P:
-                    result = MovePawn(locationX, locationY, toX, toY);
-                    break;
+            if (movingPiece != null) {
+                switch (movingPiece.Piece) {
+                    case Pieces.K:
+                        result = MoveKing(locationX, locationY, toX, toY);
+                        break;
+                    case Pieces.Q:
+                        result = MoveQueen(locationX, locationY, toX, toY);
+                        break;
+                    case Pieces.B:
+                        result = MoveBishop(locationX, locationY, toX, toY);
+                        break;
+                    case Pieces.N:
+                        result = MoveKnight(locationX, locationY, toX, toY);
+                        break;
+                    case Pieces.R:
+                        result = MoveRook(locationX, locationY, toX, toY);
+                        break;
+                    case Pieces.P:
+                        result = MovePawn(locationX, locationY, toX, toY);
+                        break;
+                }
             }
             return result;
         }
@@ -333,6 +335,20 @@ namespace File_IO.Models {
             } else {
                 return false;
             }
+        }
+
+        //Returns a list of [x, y] pairs of locations that the piece indicated
+        //  by the x and y coordinates can legally move to.
+        public List<int[]> GetPossibleMoves(int x, int y) {
+            List<int[]> output = new List<int[]>();
+            for (int loopY = 0; loopY < board.Length; loopY++) {
+                for (int loopX = 0; loopX < board[loopY].Length; loopX++) {
+                    if (CheckMove(x, y, loopX, loopY)) {
+                        output.Add(new int[] { loopX, loopY });
+                    }
+                }
+            }
+            return output;
         }
     }
 }
