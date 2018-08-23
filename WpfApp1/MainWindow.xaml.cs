@@ -18,29 +18,7 @@ namespace ChessDisplay
         {
             InitializeComponent();
             board = new Board();
-            SetUpBoard();
-        }
-
-        private void SetUpBoard()
-        {
-            ChessSquare chessSquare;
-            bool grey = false;
-            for (int column = 0; column < 8; column++)
-            {
-                for (int row = 0; row < 8; row++)
-                {
-                    chessSquare = new ChessSquare(grey);
-                    chessSquare.SetValue(Grid.ColumnProperty, column);
-                    chessSquare.SetValue(Grid.RowProperty, row);
-
-
-                    chessSquare.SetPicture(board[column, row]?.BitmapImage);
-
-                    ChessBoard.Children.Add(chessSquare);
-                    grey = !grey;
-                }
-                grey = !grey;
-            }
+            ChessBoard.Board = board;
         }
     }
 }

@@ -26,7 +26,9 @@ namespace ChessDisplay
 
         public Board Board {
             get { return board; }
-            set { board = value; }
+            set { board = value;
+                SetUpBoard();
+            }
         }
 
         public ChessBoardControl()
@@ -34,29 +36,26 @@ namespace ChessDisplay
             InitializeComponent();
         }
 
-
-        public void MakeBoardCheckered(object sender, RoutedEventArgs e) {
-            ColumnDefinition[] columnDefinitions = BoardDisplay.ColumnDefinitions.ToArray();
-            RowDefinition[] rowDefinitions = BoardDisplay.RowDefinitions.ToArray();
-            for (int column = 0; column < columnDefinitions.Length; column++)
+        private void SetUpBoard()
+        {
+            ChessSquare chessSquare;
+            bool grey = false;
+            for (int column = 0; column < 8; column++)
             {
-                int alternation = column % 2;
-                for (int row = 0; row < rowDefinitions.Length; row++)
+                for (int row = 0; row < 8; row++)
                 {
-                    if (row % 2 != alternation)
-                    {
-                        BoardDisplay.Children.Add(AddBoardRectangle(row, column));
-                    }
-                }
-            }
-        }
+                    chessSquare = new ChessSquare(grey);
+                    chessSquare.SetValue(Grid.ColumnProperty, column);
+                    chessSquare.SetValue(Grid.RowProperty, row);
 
-        public Rectangle AddBoardRectangle(int row, int column) {
-            Rectangle rect = new Rectangle();
-            rect.Fill = new SolidColorBrush(Colors.DarkGray);
-            rect.SetValue(Grid.RowProperty, row);
-            rect.SetValue(Grid.ColumnProperty, column);
-            return rect;
+
+                    chessSquare.SetPicture(board[row, column]?.BitmapImage);
+
+                    BoardDisplay.Children.Add(chessSquare);
+                    grey = !grey;
+                }
+                grey = !grey;
+            }
         }
     }
 }

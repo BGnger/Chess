@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ChessDisplay"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
-    <Grid Background="White" Name="BoardDisplay" Loaded="MakeBoardCheckered">
+    <Grid Background="White" Name="BoardDisplay">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>

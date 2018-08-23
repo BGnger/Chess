@@ -46,10 +46,8 @@
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\ChessPiece.cs" />
     <Compile Include="Models\ChessPieces.cs" />
-	<Compile Include="Interfaces\IView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\ConsoleView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
