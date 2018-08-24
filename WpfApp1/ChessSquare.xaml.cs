@@ -13,6 +13,8 @@ namespace ChessDisplay
     {
         public readonly SolidColorBrush DefaultBackground;
 
+        private bool IsSelected = false;
+
         public ChessSquare(bool grey)
         {
             InitializeComponent();
@@ -21,6 +23,10 @@ namespace ChessDisplay
             this.MouseEnter += Square_Enter;
             this.MouseLeave += Square_Leave;
 
+        }
+
+        public void ToggleIsSelected() {
+            IsSelected = !IsSelected;
         }
 
         public void SetPicture(BitmapImage image)
