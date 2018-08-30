@@ -31,9 +31,32 @@ namespace ChessDisplay
             }
         }
 
+        public bool SelectingMove { get; set; }
+
+        public KeyValuePair<int, int> ChessSquarePair { get; set; }
+
         public ChessBoardControl()
         {
             InitializeComponent();
+        }
+
+        public void ToggleSelectingMove(ChessSquare square)
+        {
+            SelectingMove = !SelectingMove;
+            SelectMoveView(square);
+        }
+
+        private void SelectMoveView(ChessSquare square) {
+            int x = square.XPos;
+            int y = square.YPos;
+            DisplayAllPossibleMoves(x, y);
+        }
+
+        private void DisplayAllPossibleMoves(int x, int y) {
+            List<int[]> ListOfMoves = Board.GetPossibleMoves(x, y);
+            //ListOfMoves.ForEach(coordinates -> {
+                
+            //});
         }
 
         private void SetUpBoard()
@@ -44,10 +67,10 @@ namespace ChessDisplay
             {
                 for (int row = 0; row < 8; row++)
                 {
-                    chessSquare = new ChessSquare(grey);
+                    chessSquare = new ChessSquare(grey, this);
                     chessSquare.SetValue(Grid.ColumnProperty, column);
                     chessSquare.SetValue(Grid.RowProperty, row);
-
+                    //chessSquare.SetBinding(ChessSquare.IsSelectedProperty, ChessSquareBinding());
 
                     chessSquare.SetPicture(board[row, column]?.BitmapImage);
 
@@ -57,5 +80,16 @@ namespace ChessDisplay
                 grey = !grey;
             }
         }
+
+       // private Binding ChessSquareBinding() {
+            //toggle the SelectingMove
+            //prevent selecting multiple spaces
+            //display all possible moves
+            //if possiblemove isSelected
+                //execute movePiece logic
+                //update board's View
+           //else
+                //display pop-up saying 'invalid move'
+       // }
     }
 }
